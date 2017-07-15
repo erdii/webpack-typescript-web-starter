@@ -1,5 +1,5 @@
 {
-    "editor.renderWhitespace": true,
+    "editor.renderWhitespace": "boundary",
     "editor.insertSpaces": false,
     "files.trimTrailingWhitespace": false,
     "typescript.tsdk": "./node_modules/typescript/lib"
