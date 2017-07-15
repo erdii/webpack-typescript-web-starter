@@ -1,33 +1,21 @@
 import * as React from "react";
-import { action, observable, computed } from "mobx";
+import { action, observable, computed, reaction } from "mobx";
 import { observer } from "mobx-react";
+import { TransitionGroup } from "react-transition-group";
+import TodoModel from "../models/todo";
+import { Todo } from "./todo";
 
+const storageKey = "todos";
 
-class Todo {
-	@observable public done: boolean = false;
-	@observable public text: string;
-	public readonly id: string;
-
-	constructor(text: string, done: boolean = false) {
-		this.id = (Date.now() + Math.random()).toString(36);
-		this.text = text;
-		this.done = done;
-	}
-}
 
 @observer
 export default class TodoList extends React.Component<any, any> {
-	@observable private todos = [
-		new Todo("Hot Module Reloading"),
-		new Todo("CSS Solution"),
-		new Todo("store structure?"),
-		new Todo("grok mobx", true),
-	];
+	@observable private todos = this.loadTodos();
 
 	private dropdownEl: any;
 	private inputEl: HTMLInputElement;
 
-	@observable private filter: "all"|"todo"|"done" = "all";
+	@observable private filter: "all"|"todo"|"done" = this.loadFilter();
 
 	@computed private get filteredTodos() {
 		switch (this.filter) {
@@ -35,6 +23,24 @@ export default class TodoList extends React.Component<any, any> {
 			case "todo": return this.todos.filter(todo => !todo.done);
 			case "done": return this.todos.filter(todo => todo.done);
 		}
+	}
+
+	constructor(props) {
+		super(props);
+
+		reaction(
+			() => this.todos.length,
+			() => {
+				this.persistTodos();
+			}
+		);
+
+		reaction(
+			() => this.filter,
+			() => {
+				this.persistFilter();
+			}
+		);
 	}
 
 	public render () {
@@ -47,25 +53,43 @@ export default class TodoList extends React.Component<any, any> {
 
 				<select
 					ref={el => this.dropdownEl = el}
-					onChange={() => this.filter = this.dropdownEl.value}>
+					onChange={() => this.filter = this.dropdownEl.value}
+					value={this.filter}
+				>
 					<option value="all">Alle</option>
 					<option value="todo">Todo</option>
 					<option value="done">Fertig</option>
 				</select>
 
 				<ul>
-					{this.filteredTodos.map(todo => (
-						<li key={todo.id} onClick={() => todo.done = !todo.done}>
-							{
-								todo.done
-									? <s>{ todo.text }</s>
-									: todo.text
-							}
-						</li>
-					))}
+					<TransitionGroup>
+						{this.filteredTodos.map(todo =>
+							<Todo persist={this.persistTodos} key={todo.id} todo={todo} />
+						)}
+					</TransitionGroup>
 				</ul>
 			</div>
 		);
+	}
+
+	private persistTodos = () => {
+		localStorage.setItem(storageKey, JSON.stringify(this.todos));
+	}
+
+	private loadTodos(): TodoModel[] {
+		const rawTodos: any[] = JSON.parse(localStorage.getItem(storageKey)) || [];
+		return rawTodos.map(rawTodo => new TodoModel(rawTodo.text, rawTodo.done));
+	}
+
+	private persistFilter = () => {
+		localStorage.setItem("filter", this.filter);
+	}
+
+	private loadFilter(): "all"|"todo"|"done" {
+		console.log(localStorage.getItem("filter"));
+		const result = localStorage.getItem("filter") as any || "all";
+		console.log(result);
+		return result;
 	}
 
 	@action
@@ -74,7 +98,7 @@ export default class TodoList extends React.Component<any, any> {
 
 		if (value) {
 			this.todos.push(
-				new Todo(value)
+				new TodoModel(value)
 			);
 
 			this.inputEl.value = "";
