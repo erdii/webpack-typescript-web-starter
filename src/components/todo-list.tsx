@@ -10,11 +10,10 @@ const storageKey = "todos";
 
 @observer
 export default class TodoList extends React.Component<any, any> {
-	@observable private todos = this.loadTodos();
-
 	private dropdownEl: any;
 	private inputEl: HTMLInputElement;
 
+	@observable private todos = this.loadTodos();
 	@observable private filter: "all"|"todo"|"done" = this.loadFilter();
 
 	@computed private get filteredTodos() {

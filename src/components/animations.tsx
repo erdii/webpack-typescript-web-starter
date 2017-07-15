@@ -12,7 +12,6 @@ export class FadeAnimation extends React.Component<IFadeAnimationProps, any> {
 		return (
 			<CSSTransition
 				{...props}
-				timeout={500}
 				appear
 				classNames="fade"
 			>

@@ -15,7 +15,9 @@ export class Todo extends React.Component<ITodoProps, any> {
 		const { todo, persist, ...props } = this.props;
 
 		return (
-			<FadeAnimation {...props}>
+			<FadeAnimation {...props}
+				timeout={500}
+			>
 				<li onClick={() => {
 					todo.done = !todo.done;
 					persist();
