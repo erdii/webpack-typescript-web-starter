@@ -5,6 +5,8 @@ import {
 } from "react-router-dom";
 import { observer } from "mobx-react";
 
+import "../styles/index.less";
+
 import Frame from "./frame";
 import HomePage from "../pages/home";
 import TodoPage from "../pages/todo";
