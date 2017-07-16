@@ -17,7 +17,7 @@ export class Todo extends React.Component<ITodoProps, any> {
 		return (
 			<FadeAnimation
 				{...props}
-				timeout={500}
+				timeout={250}
 			>
 				<li onClick={() => {
 					todo.done = !todo.done;
