@@ -85,10 +85,7 @@ export default class TodoList extends React.Component<any, any> {
 	}
 
 	private loadFilter(): "all"|"todo"|"done" {
-		console.log(localStorage.getItem("filter"));
-		const result = localStorage.getItem("filter") as any || "all";
-		console.log(result);
-		return result;
+		return localStorage.getItem("filter") as any || "all";
 	}
 
 	@action

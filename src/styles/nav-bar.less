@@ -1,0 +1,30 @@
+@import "./colors.less";
+
+.nav {
+	display: flex;
+	flex-direction: row;
+
+	height: 25px;
+
+	a {
+		display: flex;
+		flex: 1;
+
+		margin: 1px;
+
+		justify-content: center;
+		align-items: center;
+
+		color: contrast(@color-1);
+		background: @color-1;
+		transition: background-color 0.5s ease-in;
+
+		&:hover {
+			background: @color-1-hover;
+		}
+
+		&.active {
+			background: @color-1-focus;
+		}
+	}
+}

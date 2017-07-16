@@ -1,9 +1,9 @@
 import * as React from "react";
+import { NavBar } from "./nav-bar";
 
 export default ({ children }) => (
 	<div>
-		Frame
-		<hr />
+		<NavBar />
 
 		<div>
 			{ children }

@@ -6,7 +6,8 @@ import {
 import { observer } from "mobx-react";
 
 import Frame from "./frame";
-import Home from "../pages/home";
+import HomePage from "../pages/home";
+import TodoPage from "../pages/todo";
 
 @observer
 export default class App extends React.Component<any, any> {
@@ -14,7 +15,8 @@ export default class App extends React.Component<any, any> {
 		return (
 			<Router>
 					<Frame>
-						<Route exact path="/" component={Home}/>
+						<Route exact path="/" component={HomePage}/>
+						<Route path="/todo" component={TodoPage}/>
 					</Frame>
 			</Router>
 		);

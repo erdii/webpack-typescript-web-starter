@@ -12,10 +12,10 @@ interface ITodoProps {
 @observer
 export class Todo extends React.Component<ITodoProps, any> {
 	public render() {
-		const { todo, persist, ...props } = this.props;
+		const { todo, persist } = this.props;
 
 		return (
-			<FadeAnimation {...props}
+			<FadeAnimation
 				timeout={500}
 			>
 				<li onClick={() => {
