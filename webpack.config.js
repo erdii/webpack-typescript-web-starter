@@ -88,10 +88,10 @@ module.exports = (env) => {
 
 			// hot reloading
 			config.entry.unshift("react-hot-loader/patch");
-			config.module.rules.find(rule => rule.test.source === "\\.tsx?$").use.unshift("react-hot-loader/webpack")
+			config.module.rules.find(rule => rule.test.source === "\\.tsx?$").use.unshift("react-hot-loader/webpack");
 			config.plugins.unshift(
 				new webpack.NamedModulesPlugin(),
-				new webpack.HotModuleReplacementPlugin(),
+				new webpack.HotModuleReplacementPlugin()
 			);
 
 			// dev server
